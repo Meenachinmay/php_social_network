@@ -86,6 +86,32 @@
                 array_push($error_array, "Your password can only contain english characters or numbers<br>");
             }
         }
+
+        if (empty($error_array)) {
+            $password = md5($password);
+
+            $username = strtolower($fname . "_" . $lname);
+            $check_username_query = mysqli_query($con, "SELECT username FROM users WHERE username='$username'");
+
+            $i = 0;
+            while(mysqli_num_rows($check_username_query) != 0) {
+                $i++;
+                $username = $username . "_" . $i;
+                $check_username_query = mysqli_query($con, "SELECT username FROM users WHERE username='$username'");
+            }
+
+            $rand = rand(1,2);
+
+            if ($rand == 1) {
+                $profile_pic = "assets/images/profile_pics/defaults/head_deep_blue.png";
+            }
+            else if ($rand == 2) {
+                $profile_pic = "assets/images/profile_pics/defaults/head_red.png";
+            }
+
+            $query = mysqli_query($con, "INSERT INTO users (first_name, last_name, username, email, password, signup_date, profile_pic, num_posts, num_likes, user_closed, friend_array) VALUES ('$fname', '$lname', '$username', '$em', '$password', '$date', '$profile_pic', '0', '0', 'no', ',')");
+
+        }
     }
 
     echo (mysqli_error($con));
