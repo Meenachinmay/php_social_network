@@ -1,6 +1,6 @@
 <?php 
     
-    if (isset($_POST['login_button'])) {
+    if (filter_has_var(INPUT_POST, 'login_button')) {
         $email = filter_var($_POST['log_email'], FILTER_SANITIZE_EMAIL);
 
         $_SESSION['log_email'] = $email;
@@ -20,6 +20,5 @@
         }else {
             array_push($error_array, "Email or Password is incorrect<br>");
         }
-
     }
 ?>
